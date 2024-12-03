@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Menú del Restaurante{% endblock %}
+
+{% block content %}
+<h2>Menú del Restaurante</h2>
+
+<div style="display: flex;">
+    <!-- Lista de categorías en la parte izquierda -->
+    <aside style="width: 20%; padding-right: 20px;">
+        <h3>Categorías</h3>
+        <ul>
+            <li><a href="{{ url_for('menu_cliente') }}">Todas</a></li>
+            {% for categoria in categorias %}
+            <li><a href="{{ url_for('menu_cliente', categoria_id=categoria.id) }}">{{ categoria.nombre }}</a></li>
+            {% endfor %}
+        </ul>
+    </aside>
+
+    <!-- Comida general en la parte central -->
+    <section style="width: 60%;">
+        <form action="{{ url_for('agregar_carrito') }}" method="POST">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                        <th>Extras</th>
+                        <th>Cantidad</th>
+                        <th>Agregar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for plato in platos %}
+                    <tr>
+                        <td><img src="{{ plato.imagen }}" alt="{{ plato.nombre }}" width="100"></td>
+                        <td>{{ plato.nombre }}</td>
+                        <td>{{ plato.descripcion }}</td>
+                        <td>{{ plato.precio }}</td>
+                        <td>
+                            {% for extra in plato.plato_extras %}
+                                <label>
+                                    <input type="checkbox" name="extras_{{ plato.id }}" value="{{ extra.extra.nombre }}">
+                                    {{ extra.extra.nombre }}
+                                </label><br>
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <input type="number" name="cantidad_{{ plato.id }}" value="1" min="1">
+                        </td>
+                        <td>
+                            <button type="submit" name="plato_id" value="{{ plato.id }}">Agregar al carrito</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    </section>
+
+    <!-- Carrito de compras -->
+    <aside style="width: 20%; padding-left: 20px;">
+        <h3>Carrito de Compras</h3>
+        <ul>
+            {% if session.get('carrito') %}
+                {% for item in session['carrito'] %}
+                <li>
+                    {{ item['nombre'] }} ({{ item['cantidad'] }} unidades) - ${{ item['precio_total'] }}
+                    {% if item['extras'] %}
+                        <br>Extras: {{ item['extras'] | join(', ') }}
+                    {% endif %}
+                </li>
+                {% endfor %}
+            {% else %}
+                <li>El carrito está vacío.</li>
+            {% endif %}
+        </ul>
+        <form action="{{ url_for('finalizar_compra') }}" method="POST">
+            <button type="submit">Finalizar Compra</button>
+        </form>
+    </aside>
+</div>
+{% endblock %}

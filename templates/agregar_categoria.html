@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Agregar Categoría{% endblock %}
+
+{% block content %}
+<h2>Agregar Categoría</h2>
+<form method="POST">
+    <label for="nombre">Nombre de la Categoría:</label>
+    <input type="text" name="nombre" required><br>
+
+    <label for="descripcion">Descripción:</label>
+    <textarea name="descripcion"></textarea><br>
+
+    <button type="submit">Agregar Categoría</button>
+</form>
+{% endblock %}

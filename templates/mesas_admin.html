@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Configuración de Mesas{% endblock %}
+
+{% block content %}
+<h2>Configuración de Mesas</h2>
+
+<!-- Formulario para agregar una nueva mesa -->
+<h3>Agregar Mesa</h3>
+<form method="POST" action="{{ url_for('mesas_admin') }}">
+    <label for="numero">Número de Mesa:</label>
+    <input type="number" name="numero" required><br>
+    
+    <label for="max_comensales">Máx. Comensales:</label>
+    <input type="number" name="max_comensales" required><br>
+    
+    <label for="estado">Estado:</label>
+    <select name="estado">
+        <option value="libre">Libre</option>
+        <option value="ocupada">Ocupada</option>
+    </select><br>
+    
+    <button type="submit">Agregar Mesa</button>
+</form>
+
+<hr>
+
+<!-- Listado de mesas existentes -->
+<h3>Mesas Existentes</h3>
+<div class="mesas-lista">
+    {% for mesa in mesas %}
+    <form method="POST" action="{{ url_for('editar_mesa', mesa_id=mesa.id) }}">
+        <label for="numero">Número:</label>
+        <input type="number" name="numero" value="{{ mesa.numero }}" required><br>
+        
+        <label for="max_comensales">Máx. Comensales:</label>
+        <input type="number" name="max_comensales" value="{{ mesa.max_comensales }}" required><br>
+        
+        <label for="comensales">Comensales Actuales:</label>
+        <input type="number" name="comensales" value="{{ mesa.comensales }}" required><br>
+        
+        <label for="estado">Estado:</label>
+        <select name="estado">
+            <option value="libre" {% if mesa.estado == 'libre' %}selected{% endif %}>Libre</option>
+            <option value="ocupada" {% if mesa.estado == 'ocupada' %}selected{% endif %}>Ocupada</option>
+        </select><br>
+        
+        <button type="submit">Actualizar Mesa</button>
+    </form>
+
+    <!-- Botón para eliminar la mesa -->
+    <form method="POST" action="{{ url_for('eliminar_mesa', mesa_id=mesa.id) }}" onsubmit="return confirm('¿Seguro que deseas eliminar esta mesa?');">
+        <button type="submit">Eliminar</button>
+    </form>
+    <hr>
+    {% endfor %}
+</div>
+{% endblock %}

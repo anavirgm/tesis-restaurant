@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Historial de Pedidos{% endblock %}
+
+{% block content %}
+<h2>Historial de Pedidos</h2>
+
+{% if pedidos %}
+<table>
+    <thead>
+        <tr>
+            <th>ID Pedido</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th>Detalles de Comida</th>
+            <th>Dirección de Entrega</th>
+            <th>Pagado</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pedido_detalle in pedidos %}
+        <tr>
+            <td>{{ pedido_detalle.pedido.id }}</td>
+            <td>{{ pedido_detalle.pedido.estado }}</td>
+            <td>{{ pedido_detalle.pedido.fecha.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+            <td>
+                <ul>
+                    {% for detalle in pedido_detalle.detalles_comida %}
+                    <li>{{ detalle.cantidad }} x {{ detalle.nombre_plato }}
+                        {% if detalle.extras %}
+                        <ul>
+                            {% for extra in detalle.extras %}
+                            <li>Extra: {{ extra }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>{{ pedido_detalle.pedido.ubicacion if pedido_detalle.pedido.ubicacion else 'N/A' }}</td>
+            <td>{{ 'Sí' if pedido_detalle.factura.pagado else 'No' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No has realizado ningún pedido aún.</p>
+{% endif %}
+{% endblock %}

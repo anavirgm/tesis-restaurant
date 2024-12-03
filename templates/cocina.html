@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Cocina - Pedidos{% endblock %}
+{% block content %}
+<h1>Pedidos en Cocina</h1>
+
+<div class="pedidos">
+    {% for pedido_detalle in pedidos %}
+        <div class="pedido-item {% if pedido_detalle.pedido.estado == 'listo' %}pedido-listo{% endif %}">
+            <p>Pedido ID: {{ pedido_detalle.pedido.id }}</p>
+            {% if pedido_detalle.pedido.mesa_id is not none %}
+                <p>Mesa: {{ pedido_detalle.pedido.mesa_id }}</p>
+            {% endif %}
+            <p>Estado: {{ pedido_detalle.pedido.estado }}</p>
+            {% if pedido_detalle.pedido.ubicacion %}
+                <p>Ubicación: {{ pedido_detalle.pedido.ubicacion }}</p>
+            {% endif %}
+            <h3>Comida:</h3>
+            <ul>
+                {% for detalle in pedido_detalle.detalles_comida %}
+                    <li>{{ detalle.cantidad }} x {{ detalle.nombre_plato }}
+                        {% if detalle.extras %}
+                        <ul>
+                            {% for extra in detalle.extras %}
+                            <li>Extra: {{ extra }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+
+            {% if pedido_detalle.pedido.estado == 'listo' %}
+                <form action="{{ url_for('borrar_pedido', pedido_id=pedido_detalle.pedido.id) }}" method="POST">
+                    <button type="submit">Borrar Pedido</button>
+                </form>
+            {% else %}
+                <form action="{{ url_for('marcar_listo', pedido_id=pedido_detalle.pedido.id) }}" method="POST">
+                    <button type="submit">Marcar como Listo</button>
+                </form>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

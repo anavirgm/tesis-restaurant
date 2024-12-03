@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Mi Cuenta{% endblock %}
+
+{% block content %}
+<h2>Mi Cuenta</h2>
+<div class="cuenta-info">
+    <p><strong>Nombre:</strong> {{ usuario.nombre }} {{ usuario.apellido }}</p>
+    <p><strong>Cédula:</strong> {{ usuario.cedula }}</p>
+    <p><strong>Email:</strong> {{ usuario.email }}</p>
+</div>
+
+<!-- Formulario para editar email y contraseña -->
+<h3>Editar Información</h3>
+<form method="POST">
+    <div>
+        <label for="email">Nuevo Email</label>
+        <input type="email" name="email" id="email" value="{{ usuario.email }}">
+    </div>
+    
+    <div>
+        <label for="password">Nueva Contraseña</label>
+        <input type="password" name="password" id="password">
+    </div>
+    
+    <button type="submit">Actualizar</button>
+</form>
+
+{% endblock %}

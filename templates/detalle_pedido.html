@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalles del Pedido{% endblock %}
+
+{% block content %}
+    <h2>Detalles del Pedido #{{ pedido.id }}</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Plato</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Extras</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detalle in detalles %}
+            <tr>
+                <td>{{ detalle.menu.nombre }}</td>
+                <td>{{ detalle.cantidad }}</td>
+                <td>{{ detalle.precio_unitario }}</td>
+                <td>{{ detalle.extras if detalle.extras else 'N/A' }}</td>
+                <td>{{ detalle.cantidad * detalle.precio_unitario }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p>Total del Pedido: {{ pedido.factura.total }}</p>
+    <p>Estado de Pago: {{ 'Pagado' if pedido.factura.pagado else 'Pendiente' }}</p>
+{% endblock %}

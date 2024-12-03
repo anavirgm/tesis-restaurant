@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestión de Mesas{% endblock %}
+
+{% block content %}
+<h2>Gestión de Mesas</h2>
+
+<!-- Listado de mesas existentes -->
+<h3>Mesas Existentes</h3>
+<div class="mesas-lista">
+    {% for mesa in mesas %}
+    <form method="POST" action="{{ url_for('editar_mesa', mesa_id=mesa.id) }}">
+        <label for="numero">Número:</label>
+        <input type="number" name="numero" value="{{ mesa.numero }}" readonly><br> <!-- Campo de solo lectura -->
+        
+        <label for="max_comensales">Máx. Comensales:</label>
+        <input type="number" name="max_comensales" value="{{ mesa.max_comensales }}" readonly><br> <!-- Campo de solo lectura -->
+        
+        <label for="comensales">Comensales Actuales:</label>
+        <input type="number" name="comensales" value="{{ mesa.comensales }}" required><br>
+        
+        <label for="estado">Estado:</label>
+        <select name="estado">
+            <option value="libre" {% if mesa.estado == 'libre' %}selected{% endif %}>Libre</option>
+            <option value="ocupada" {% if mesa.estado == 'ocupada' %}selected{% endif %}>Ocupada</option>
+        </select><br>
+        
+        <button type="submit">Actualizar Mesa</button>
+    </form>
+    <hr>
+    {% endfor %}
+</div>
+{% endblock %}

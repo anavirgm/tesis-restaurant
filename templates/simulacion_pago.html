@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Simulación de Pago</h1>
+<h2>Detalles del Pedido</h2>
+<ul>
+    {% for item in carrito %}
+    <li>{{ item['cantidad'] }}x {{ item['nombre'] }} - {{ item['precio_total'] }} USD</li>
+    {% endfor %}
+</ul>
+<p>Total a pagar: {{ total }} USD</p>
+
+<form method="POST">
+    <label for="metodo_pago">Método de Pago:</label>
+    <select name="metodo_pago" id="metodo_pago" required>
+        <option value="" disabled selected>Selecciona un método</option>
+        <option value="tarjeta">Tarjeta de Crédito/Débito</option>
+        <option value="transferencia">Transferencia Bancaria</option>
+    </select>
+
+    <div id="datos_tarjeta" style="display: none;">
+        <label for="numero_tarjeta">Número de Tarjeta:</label>
+        <input type="text" name="numero_tarjeta" maxlength="16" placeholder="Ej. 1234123412341234">
+        
+        <label for="nombre_tarjeta">Nombre en la Tarjeta:</label>
+        <input type="text" name="nombre_tarjeta" placeholder="Ej. Juan Pérez">
+        
+        <label for="vencimiento">Fecha de Vencimiento (MM/YY):</label>
+        <input type="text" name="vencimiento" maxlength="5" placeholder="Ej. 12/25">
+        
+        <label for="cvv">CVV:</label>
+        <input type="text" name="cvv" maxlength="4" placeholder="Ej. 123">
+    </div>
+
+    <div id="datos_transferencia" style="display: none;">
+        <label for="numero_referencia">Número de Referencia:</label>
+        <input type="text" name="numero_referencia" placeholder="Ej. 987654321">
+    </div>
+
+    <button type="submit">Confirmar Pago</button>
+    <a href="{{ url_for('menu_cliente') }}">Regresar al Carrito</a>
+</form>
+
+<script>
+    // Función para actualizar la visibilidad al cargar la página
+    function actualizarVisibilidad() {
+        const metodo = document.getElementById('metodo_pago').value;
+        document.getElementById('datos_tarjeta').style.display = metodo === 'tarjeta' ? 'block' : 'none';
+        document.getElementById('datos_transferencia').style.display = metodo === 'transferencia' ? 'block' : 'none';
+    }
+
+    // Evento para cambio de selección
+    document.getElementById('metodo_pago').addEventListener('change', actualizarVisibilidad);
+
+    // Llamar a la función al cargar la página
+    actualizarVisibilidad();
+</script>
+{% endblock %}

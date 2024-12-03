@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Usuario{% endblock %}
+
+{% block content %}
+<h2>Editar Rol de {{ usuario.nombre }} {{ usuario.apellido }}</h2>
+
+<form method="POST">
+    <label for="rol">Rol:</label>
+    <select name="rol" id="rol">
+        <option value="administrador" {% if usuario.rol == 'administrador' %}selected{% endif %}>Administrador</option>
+        <option value="empleado" {% if usuario.rol == 'empleado' %}selected{% endif %}>Empleado</option>
+        <option value="cliente" {% if usuario.rol == 'cliente' %}selected{% endif %}>Cliente</option>
+    </select>
+    <button type="submit">Guardar Cambios</button>
+</form>
+
+<a href="{{ url_for('gestionar_usuarios') }}">Volver a la lista de usuarios</a>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Facturación</h1>
+
+<div class="facturas">
+    {% for factura_detalle in facturas %}
+        <div class="factura-item {% if factura_detalle.factura.pagado %}factura-pagada{% endif %}">
+            <p>Factura ID: {{ factura_detalle.factura.id }}</p>
+            <p>Pedido ID: {{ factura_detalle.factura.pedido.id }}</p>
+            <p>Total: ${{ factura_detalle.factura.total }}</p>
+            <p>Pagada: {{ 'Sí' if factura_detalle.factura.pagado else 'No' }}</p>
+
+            {% if factura_detalle.factura.pedido.ubicacion %}
+                <p>Ubicación: {{ factura_detalle.factura.pedido.ubicacion }}</p>
+            {% else %}
+                <p>Ubicación: En restaurante</p>
+            {% endif %}
+
+            <h3>Comida:</h3>
+            <ul>
+                {% for detalle in factura_detalle.detalles_comida %}
+                    <li>{{ detalle.cantidad }} x {{ detalle.nombre_plato }}
+                        {% if detalle.extras %}
+                        <ul>
+                            {% for extra in detalle.extras %}
+                            <li>Extra: {{ extra }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+
+            {% if not factura_detalle.factura.pagado %}
+                <form action="{{ url_for('marcar_pagado', factura_id=factura_detalle.factura.id) }}" method="POST">
+                    <button type="submit">Pagar Factura</button>
+                </form>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

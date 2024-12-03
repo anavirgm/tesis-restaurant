@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Menú{% endblock %}
+
+{% block content %}
+<div class="menu-container">
+    <h2>Menú</h2>
+    <div class="menu-grid">
+        {% for plato in platos %}
+        <div class="menu-item">
+            <img src="{{ plato.imagen }}" alt="{{ plato.nombre }}">
+            <h3>{{ plato.nombre }}</h3>
+            <p>{{ plato.descripcion }}</p>
+            <p>Precio: ${{ plato.precio }}</p>
+            <button>Agregar al Pedido</button>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

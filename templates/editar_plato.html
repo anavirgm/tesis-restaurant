@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Plato{% endblock %}
+
+{% block content %}
+<h2>Editar Plato</h2>
+<form method="POST">
+    <label for="nombre">Nombre:</label>
+    <input type="text" name="nombre" value="{{ plato.nombre }}" required><br>
+
+    <label for="descripcion">Descripción:</label>
+    <textarea name="descripcion">{{ plato.descripcion }}</textarea><br>
+
+    <label for="precio">Precio:</label>
+    <input type="number" step="0.01" name="precio" value="{{ plato.precio }}" required><br>
+
+    <label>Categoría:</label><br>
+    {% for categoria in categorias %}
+        <input type="radio" name="categoria_id" value="{{ categoria.id }}" 
+               {% if categoria.id == plato.categoria_id %}checked{% endif %}>
+        <label>{{ categoria.nombre }}</label><br>
+    {% endfor %}
+
+    <label>Extras:</label><br>
+    {% for extra in extras %}
+        <input type="checkbox" name="extras" value="{{ extra.id }}"
+               {% if extra in plato.plato_extras %}checked{% endif %}>
+        <label>{{ extra.nombre }}</label><br>
+    {% endfor %}
+
+    <button type="submit">Actualizar Plato</button>
+</form>
+{% endblock %}

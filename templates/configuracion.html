@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Configuración</title>
+</head>
+<body>
+    <header>
+        <h1>Gestión de Pedidos - Restaurante</h1>
+        {% if session.get('user_id') %}
+        <nav>
+            <a href="{{ url_for('dashboard') }}">Inicio</a>
+            {% if session['user_role'] in ['administrador', 'empleado'] %}
+                <a href="{{ url_for('mesas') }}">Mesas</a>
+                <a href="{{ url_for('cocina') }}">Cocina</a>
+                <a href="{{ url_for('facturacion') }}">Facturación</a>
+            {% endif %}
+            {% if session['user_role'] == 'usuario' %}  <!-- Solo para usuarios regulares -->
+                <a href="{{ url_for('menu_cliente') }}">Menú</a>
+                <a href="{{ url_for('historial') }}">Historial</a>  <!-- Solo para usuarios -->
+            {% endif %}
+            <a href="{{ url_for('configuracion') }}">Configuración</a>
+            <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
+        </nav>
+        {% endif %}
+    </header>
+    
+    <main>
+        <h2>Configuración</h2>
+        <div class="configuracion-opciones">
+            <ul>
+                {% if session['user_role'] == 'administrador' %}
+                    <li><a href="{{ url_for('menu_admin') }}">Gestionar Menú</a></li>
+                    <li><a href="{{ url_for('mesas_admin') }}">Gestionar Mesas</a></li>
+                    <li><a href="{{ url_for('gestionar_usuarios') }}">Gestionar Usuarios</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('cuenta') }}">Mi Cuenta</a></li>
+                <li><a href="{{ url_for('resumen') }}">Resumen</a></li>
+                <li><a href="{{ url_for('logout') }}">Cerrar Sesión</a></li>
+            </ul>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 Gestión de Pedidos - Restaurante. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>

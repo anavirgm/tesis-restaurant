@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Ingresar Dirección{% endblock %}
+
+{% block content %}
+<h2>Ingresa tu dirección de entrega</h2>
+<form method="POST">
+    <label for="direccion">Dirección:</label>
+    <input type="text" id="direccion" name="direccion" required>
+    <button type="submit">Finalizar Compra</button>
+</form>
+{% endblock %}

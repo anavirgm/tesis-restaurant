@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú del Cliente</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Menú del Cliente</h1>
+
+    <!-- Muestra de los platos disponibles -->
+    <form action="{{ url_for('agregar_carrito') }}" method="POST">
+        <table>
+            <thead>
+                <tr>
+                    <th>Imagen</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Extras</th>
+                    <th>Cantidad</th>
+                    <th>Agregar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for plato in platos %}
+                <tr>
+                    <td>
+                        <img src="{{ plato.imagen }}" alt="{{ plato.nombre }}" width="100">
+                    </td>
+                    <td>{{ plato.nombre }}</td>
+                    <td>{{ plato.descripcion }}</td>
+                    <td>{{ plato.precio }}</td>
+                    <td>
+                        <input type="checkbox" name="extras_{{ plato.id }}" value="1"> Extras
+                    </td>
+                    <td>
+                        <input type="number" name="cantidad_{{ plato.id }}" value="1" min="1">
+                    </td>
+                    <td>
+                        <button type="submit" name="plato_id" value="{{ plato.id }}">Agregar al carrito</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+
+    <!-- Link para finalizar la compra -->
+    <a href="{{ url_for('finalizar_compra') }}">Finalizar Compra</a>
+
+    <!-- Mostrando el carrito de compras -->
+    <h2>Carrito de Compras</h2>
+    {% if session['carrito'] %}
+        <ul>
+            {% for item in session['carrito'] %}
+            <li>
+                {{ item['cantidad'] }} x {{ item['nombre'] }} (Extras: {{ 'Sí' if item['extras'] == '1' else 'No' }}) - {{ item['precio_total'] }}$
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>El carrito está vacío.</p>
+    {% endif %}
+
+    <!-- Botón para vaciar el carrito -->
+    <form action="{{ url_for('vaciar_carrito') }}" method="POST">
+        <button type="submit">Vaciar Carrito</button>
+    </form>
+
+</body>
+</html>

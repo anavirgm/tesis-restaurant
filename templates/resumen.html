@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Resumen{% endblock %}
+
+{% block content %}
+<h2>Resumen de Categorías y Platos más Populares</h2>
+<table class="resumen-tabla">
+    <thead>
+        <tr>
+            <th>Categoría</th>
+            <th>Plato Más Vendido</th>
+            <th>Cantidad Vendida</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in resumen_categoria %}
+        <tr>
+            <td>{{ item.categoria }}</td>
+            <td>{{ item.plato_mas_vendido }}</td>
+            <td>{{ item.cantidad_vendida }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

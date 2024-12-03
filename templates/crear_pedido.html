@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Pedido</title>
+</head>
+<body>
+    <h2>Crear Nuevo Pedido</h2>
+    <form action="{{ url_for('procesar_creacion_pedido') }}" method="POST">
+        <label for="estado">Estado del Pedido:</label>
+        <input type="text" id="estado" name="estado" required>
+
+        <!-- Solo mostrar el campo de ubicación si el usuario no es empleado ni administrador -->
+        {% if usuario.rol != 'empleado' and usuario.rol != 'administrador' %}
+            <label for="ubicacion">Dirección del Pedido:</label>
+            <input type="text" id="ubicacion" name="ubicacion" required>
+        {% endif %}
+
+        <label for="mesa_id">Mesa (opcional para empleados):</label>
+        <input type="text" id="mesa_id" name="mesa_id">
+
+        <button type="submit">Crear Pedido</button>
+    </form>
+</body>
+</html>

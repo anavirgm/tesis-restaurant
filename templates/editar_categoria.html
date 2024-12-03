@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Categoría{% endblock %}
+
+{% block content %}
+<h2>Editar Categoría</h2>
+<form method="POST">
+    <label for="nombre">Nombre de la Categoría:</label>
+    <input type="text" name="nombre" value="{{ categoria.nombre }}" required><br>
+
+    <label for="descripcion">Descripción:</label>
+    <textarea name="descripcion">{{ categoria.descripcion }}</textarea><br>
+
+    <button type="submit">Actualizar Categoría</button>
+</form>
+{% endblock %}
